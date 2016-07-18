@@ -1,0 +1,158 @@
+@charset "utf-8";
+
+html, body, #map {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#pantool {
+    position: fixed;
+    top: 10em;
+    left: 1em;
+    width: 512px;
+    z-index: 200;
+    background-color: white;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    opacity: 0.8;
+}
+
+#layertree {
+    position: absolute;
+    bottom: 5em;
+    left: 1em;
+    width: 512px;
+    z-index: 200;
+    background-color: white;
+    padding: 0 0.5em 0.5em 0.5em;
+    opacity: 0.8;
+}
+
+/* 레이어 표 */
+#layertree table {
+
+}
+
+#layertree li > span {
+    cursor: pointer;
+}
+
+#leftmenubtn {
+    position: absolute;
+    top: 2em;
+    left: 0.3em;
+    z-index: 200;
+}
+
+#footer {
+    position: fixed;
+    left: 0em;
+    bottom: 0em;
+    width: 30em;
+    height: 1em;
+    z-index: 199;
+    background-color: white;
+    opacity: 0.7;
+}
+
+#footer #coordinate {
+    position: absolute;
+    right: 1em;
+    font-size: 8pt;
+}
+
+
+/* sidenav 메뉴 */
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    /* 동적으로 수정됨 */
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background-color: #7C99BD;
+    overflow-x: hidden;
+    /* 가로 스크롤 허용안함 */
+    padding-top: 60px;
+    /* 상단으로부터 내용의 위치 */
+    transition: 0.5s;
+    /* 슬라이드 효과에 걸리는 시간 */
+    opacity: 0.8;
+}
+
+
+/* sidenav 메뉴 링크 */
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #f2f2f2;
+    display: block;
+    transition: 0.3s;
+}
+
+
+/* 링크 마우스 오버 */
+
+.sidenav a:hover,
+.offcanvas a:focus {
+    color: #818181;
+}
+
+
+/* 닫기 버튼 (좌상단) */
+
+.closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px !important;
+    margin-left: 50px;
+}
+
+
+/* 페이지 내용 스타일 - 메뉴와 함께 페이지 내용이 우측으로 밀리기를 원할 때 사용하세요 */
+
+#main {
+    transition: margin-left .5s;
+    padding: 20px;
+}
+
+
+/* 창의 높이가 450px 이하일 때, 사이드내비의 스타일을 변경합니다. (최소 패딩, 폰트 크기 줄임)*/
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+    .sidenav a {
+        font-size: 18px;
+    }
+}
+
+
+/* 그림자 효과 */
+
+.sidenav,
+#layertree,
+#pantool {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 
+                0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+/* 텍스트 그림자 효과 */
+
+#leftmenubtn, .closebtn {
+    text-shadow: 0 0 3px #000000;
+}
+
+
+/* 줄바꿈 막기 */
+
+#pantool h3, h6 {
+    display: inline;
+}
