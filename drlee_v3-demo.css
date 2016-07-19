@@ -156,3 +156,12 @@ html, body, #map {
 #pantool h3, h6 {
     display: inline;
 }
+
+/* 모든 테이블 공통 */
+table {
+    border-spacing: 0px;
+}
+
+table>td {
+    padding: 0px;
+}
