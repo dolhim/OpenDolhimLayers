@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Side Nav Test</title>
+    <style>
+    /* sidenav 메뉴 */
+      .sidenav {
+        height: 100%;
+        width: 0; /* 동적으로 수정됨 */
+        position: fixed;
+        z-index: 1; /* 제일 위 */
+        top: 0;
+        left: 0;
+        background-color: #27ae60;
+        overflow-x: hidden; /* 가로 스크롤 허용안함 */
+        padding-top: 60px; /* 상단으로부터 내용의 위치 */
+        transition: 0.5s; /* 슬라이드 효과에 걸리는 시간 */
+        opacity: 0.9;     /* 투명도 */
+      }
+
+      /* sidenav 메뉴 링크 */
+      .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #f1f1f1;
+        display: block;
+        transition: 0.3s;
+      }
+
+      /* 링크 마우스 오버 */
+      .sidenav a:hover, .offcanvas a:focus {
+      	color: #818181;
+      }
+
+      /* 닫기 버튼 (좌상단) */
+      .closebtn {
+      	position: absolute;
+      	top: 0;
+      	right: 25px;
+      	font-size: 36px !important;
+      	margin-left: 50px;
+      }
+
+      /* 페이지 내용 스타일 - 메뉴와 함께 페이지 내용이 우측으로 밀리기를 원할 때 사용하세요 */
+      #main {
+      	transition: margin-left .5s;
+      	padding: 20px;
+      }
+
+      /* 창의 높이가 450px 이하일 때, 사이드내비의 스타일을 변경합니다. (최소 패딩, 폰트 크기 줄임)*/
+      @media screen and (max-height: 450px) {
+      	.sidenav {padding-top: 15px;}
+      	.sidenav a {font-size: 18px;}
+      }
+    </style>
+
+  </head>
+  <body>
+  	<div id="leftsidenav" class="sidenav">
+    	<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      	<a href="#">About</a>
+      	<a href="#">Service</a>
+      	<a href="#">Clients</a>
+        <a href="#">부가기능</a>
+      	<a href="#">설정</a>
+    </div>
+
+    <!-- 사이드내비를 열기 할 객체를 추가합니다 -->
+    <span style="font-size:30px; cursor:pointer" onclick="openNav()">&#9776;</span>
+
+    <div id="main">
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ultrices quis ligula sed gravida. Proin id rutrum diam. Morbi fringilla tempus sem, sed volutpat nisi bibendum id. In nulla tortor, laoreet nec turpis non, hendrerit suscipit turpis. Integer euismod fringilla dui, vel pulvinar felis ullamcorper eget. Quisque quis tellus metus. Sed leo sem, ultrices sed nulla sit amet, fermentum bibendum nisi. Maecenas est tellus, auctor ut fermentum sed, suscipit in tellus. Vivamus blandit, nibh ornare aliquam dictum, magna justo viverra eros, id consectetur elit massa volutpat justo. Aliquam eu sem nunc. Vivamus id bibendum nunc.
+
+Mauris est mauris, aliquet non nunc vel, sollicitudin ultricies nunc. Quisque efficitur commodo bibendum. Integer vitae leo nec nibh consequat accumsan at sit amet turpis. In eget rhoncus magna, eu consequat mauris. Nulla finibus metus at lacus vulputate consequat. Aenean eu tincidunt sapien, vitae vehicula lacus. Morbi mauris massa, semper in iaculis eget, tempor eget metus. Nam id quam sagittis, euismod lectus et, volutpat magna. Aliquam rutrum arcu vitae eros viverra sodales. Aenean gravida odio quis risus volutpat, eget tincidunt quam commodo.
+
+Curabitur libero massa, condimentum sit amet orci vel, sagittis finibus ex. Etiam suscipit, purus ut egestas fringilla, arcu nibh volutpat ligula, eget mollis ex nunc id ante. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In hac habitasse platea dictumst. Sed eros tellus, volutpat sed quam quis, laoreet aliquam orci. Ut non risus eget lacus ullamcorper euismod et a nisl. Nulla finibus quam sit amet justo tristique, pellentesque lacinia nulla varius. Etiam euismod nisl vel dui malesuada ultricies. Sed varius ultricies sem, nec consequat lectus consequat malesuada. Aliquam dignissim tellus a nisl lacinia, nec elementum tortor sagittis. Sed orci nisi, semper quis laoreet sed, vestibulum eu nunc.
+
+Nullam lacinia imperdiet orci ut aliquam. Nulla rhoncus, sapien at interdum euismod, mi ipsum rhoncus quam, a faucibus nisl metus tincidunt dui. Morbi ac sodales ligula. Sed dignissim, augue at sollicitudin ornare, velit est sodales orci, sed eleifend mauris massa ac ante. Pellentesque accumsan luctus nulla, eget feugiat dolor tempus at. Aliquam viverra dui ut ligula dapibus, eu tempus risus aliquam. Suspendisse malesuada congue leo sit amet pellentesque. Vestibulum ac nibh volutpat, aliquam sem ut, aliquam tortor. Ut sodales rhoncus nisi ut accumsan. Phasellus ultrices, justo vel porta feugiat, urna turpis fringilla nulla, id rutrum nisl ante sit amet arcu. Proin convallis, nisi eget imperdiet molestie, nulla nulla rhoncus risus, nec rhoncus quam velit non magna. Phasellus finibus a dui nec ultricies. In ac tristique nisl, ut tincidunt magna. Suspendisse potenti. Aliquam erat volutpat.
+    </div>
+
+    <script type="text/javascript">
+    	/* 사이드 내비 메뉴 열기 */
+    	function openNav() {
+    		document.getElementById("leftsidenav").style.width = "250px";
+    	}
+
+    	/* 사이드 내비 메뉴 닫기 */
+    	function closeNav() {
+    		document.getElementById("leftsidenav").style.width = "0px";
+    	}
+    </script>
+
+  </body>
+</html>
