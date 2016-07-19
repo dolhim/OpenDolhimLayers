@@ -29,13 +29,14 @@
 
     <!-- 좌표 입력 후 엔터를 치면 이동 -->
     <div id="pantool">
-      <h3>이동</h3> <h6>ex) 127 37</h6> <br />
+      <h4>이동</h4> <h6>ex) 127 37</h6> <br />
       <input type="text" id=coordedit name="posXY">
     </div>
 
     <div id="layertree">
-      <h3>레이어 설정</h3>
-        <table name="table" id="layertable" border="1">
+      <h4>레이어 설정</h4> <h6>Click a Layer name</h6>
+        <table name="table" id="layertable">
+          <th>레이어 명</th>
           <tr>
             <td><span>OSM layer</span>
               <fieldset id="layer0">
@@ -56,7 +57,7 @@
               <label>opacity</label>
               <input class="opacity" type="range" min="0" max="1" step="0.01"/>
             </fieldset>
-            <table name="table" id="layergrouptable" border="1">
+            <table name="table" id="layergrouptable">
             </table>
           </td>
         </table>
