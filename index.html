@@ -35,7 +35,7 @@
 
     <div id="layertree">
       <h3>레이어 설정</h3>
-        <table name="table" id="layertable" border="1" cellpadding="0" cellspacing="0">
+        <table name="table" id="layertable" border="1">
           <tr>
             <td><span>OSM layer</span>
               <fieldset id="layer0">
@@ -56,7 +56,7 @@
               <label>opacity</label>
               <input class="opacity" type="range" min="0" max="1" step="0.01"/>
             </fieldset>
-            <table name="table" id="layergrouptable" border="1" cellpadding="0" cellspacing="0">
+            <table name="table" id="layergrouptable" border="1">
             </table>
           </td>
         </table>
@@ -83,21 +83,10 @@
         name: 'World borders layer'
       });
 
-      var bingMapsAerial = new ol.layer.Tile({
-        preload: Infinity,
-        source: new ol.source.BingMaps({
-          key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI'
-             + '309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3',
-          imagerySet: 'Aerial'
-        }),
-        name: 'Bing maps layer'
-      });
-
       var layers = [ osmLayer , 
           new ol.layer.Group({
             layers: [
-              worldBorderLayer,
-              bingMapsAerial
+              worldBorderLayer
             ]
           })
       ];
@@ -126,25 +115,22 @@
       });
 
       map.getLayers().forEach(function(layer, i) {
-
-        var group = document.getElementById("layergrouptable");
-
         if (layer instanceof ol.layer.Group)  
-        {    
-          layer.getLayers().forEach(function(sublayer, j) {
-            var strHTML =   
-              '<tr><td><span>' + sublayer.get('name') + '</span>'  
-              + '<fieldset id="layer0' + j + '">'  
-              + '<label class="checkbox" for="visible0' + j +'">'  
-              + '<input id="visible0' + j + '" class="visible" type="checkbox"/> visibility'
-              + '</label><label> opacity </label>'
-              + '<input class="opacity" type="range" min="0" max="1" step="0.01"/>'
-              + '</fieldset></td></tr><tr>';
-            group.innerHTML += strHTML;
-          });
-        }
-
+          layer.getLayers().forEach((sublayer, j) => test(sublayer, j));
       });
+
+      function test(sublayer, j) {
+        var group = document.getElementById("layergrouptable");
+        var strHTML =   
+          '<tr><td><span>' + sublayer.get('name') + '</span>'  
+          + '<fieldset id="layer0' + j + '">'  
+          + '<label class="checkbox" for="visible0' + j +'">'  
+          + '<input id="visible0' + j + '" class="visible" type="checkbox"/> visibility'
+          + '</label><label> opacity </label>'
+          + '<input class="opacity" type="range" min="0" max="1" step="0.01"/>'
+          + '</fieldset></td></tr><tr>';
+        group.innerHTML += strHTML;
+      }
 
       map.getLayers().forEach(function(layer, i) {
 
@@ -152,7 +138,7 @@
 
         if (layer instanceof ol.layer.Group) {
           layer.getLayers().forEach(function(sublayer, j) {
-            bindInputs('#layer' + i + j, sublayer);
+            bindInputs('#layer0' + j, sublayer);
           });
         }
       });
