@@ -6,9 +6,9 @@
 
     <link rel="stylesheet" type="text/css" href="drlee_v3-demo.css">
     
-    <link rel="stylesheet" href="http://openlayers.org/en/v3.17.1/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="css/ol.css" type="text/css">
     <script src="drlee_v3-demo.js"></script>
-    <script src="http://openlayers.org/en/v3.17.1/build/ol.js"></script>
+    <script src="build/ol.js"></script>
     <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
 
   </head>
@@ -29,13 +29,14 @@
 
     <!-- 좌표 입력 후 엔터를 치면 이동 -->
     <div id="pantool">
-      <h3>이동</h3> <h6>ex) 127 37</h6> <br />
+      <h4>이동</h4> <h6>ex) 127 37</h6> <br />
       <input type="text" id=coordedit name="posXY">
     </div>
 
     <div id="layertree">
-      <h3>레이어 설정</h3>
-        <table name="table" id="layertable" border="1" cellpadding="0" cellspacing="0">
+      <h4>레이어 설정</h4> <h6>Click a Layer name</h6>
+        <table id="layertable">
+          <tr><th>레이어명</th></tr>
           <tr>
             <td><span>OSM layer</span>
               <fieldset id="layer0">
@@ -56,7 +57,7 @@
               <label>opacity</label>
               <input class="opacity" type="range" min="0" max="1" step="0.01"/>
             </fieldset>
-            <table name="table" id="layergrouptable" border="1" cellpadding="0" cellspacing="0">
+            <table id="layergrouptable">
             </table>
           </td>
         </table>
@@ -83,21 +84,10 @@
         name: 'World borders layer'
       });
 
-      var bingMapsAerial = new ol.layer.Tile({
-        preload: Infinity,
-        source: new ol.source.BingMaps({
-          key: 'Ak-dzM4wZjSqTlzveKz5u0d4IQ4bRzVI'
-             + '309GxmkgSVr1ewS6iPSrOvOKhA-CJlm3',
-          imagerySet: 'Aerial'
-        }),
-        name: 'Bing maps layer'
-      });
-
       var layers = [ osmLayer , 
           new ol.layer.Group({
             layers: [
-              worldBorderLayer,
-              bingMapsAerial
+              worldBorderLayer
             ]
           })
       ];
@@ -126,25 +116,22 @@
       });
 
       map.getLayers().forEach(function(layer, i) {
-
-        var group = document.getElementById("layergrouptable");
-
         if (layer instanceof ol.layer.Group)  
-        {    
-          layer.getLayers().forEach(function(sublayer, j) {
-            var strHTML =   
-              '<tr><td><span>' + sublayer.get('name') + '</span>'  
-              + '<fieldset id="layer0' + j + '">'  
-              + '<label class="checkbox" for="visible0' + j +'">'  
-              + '<input id="visible0' + j + '" class="visible" type="checkbox"/> visibility'
-              + '</label><label> opacity </label>'
-              + '<input class="opacity" type="range" min="0" max="1" step="0.01"/>'
-              + '</fieldset></td></tr><tr>';
-            group.innerHTML += strHTML;
-          });
-        }
-
+          layer.getLayers().forEach((sublayer, j) => test(sublayer, j));
       });
+
+      function test(sublayer, j) {
+        var group = document.getElementById("layergrouptable");
+        var strHTML =   
+          '<tr><td><span>' + sublayer.get('name') + '</span>'  
+          + '<fieldset id="layer0' + j + '">'  
+          + '<label class="checkbox" for="visible0' + j +'">'  
+          + '<input id="visible0' + j + '" class="visible" type="checkbox"/> visibility'
+          + '</label><label> opacity </label>'
+          + '<input class="opacity" type="range" min="0" max="1" step="0.01"/>'
+          + '</fieldset></td></tr><tr>';
+        group.innerHTML += strHTML;
+      }
 
       map.getLayers().forEach(function(layer, i) {
 
@@ -152,7 +139,7 @@
 
         if (layer instanceof ol.layer.Group) {
           layer.getLayers().forEach(function(sublayer, j) {
-            bindInputs('#layer' + i + j, sublayer);
+            bindInputs('#layer0' + j, sublayer);
           });
         }
       });

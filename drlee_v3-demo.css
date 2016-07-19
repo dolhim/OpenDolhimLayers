@@ -24,7 +24,7 @@ html, body, #map {
     width: 512px;
     z-index: 200;
     background-color: white;
-    padding: 0 0.5em 0.5em 0.5em;
+    padding: 0.5em 0.5em 0.5em 0.5em;
     opacity: 0.8;
 }
 
@@ -153,6 +153,26 @@ html, body, #map {
 
 /* 줄바꿈 막기 */
 
-#pantool h3, h6 {
+#pantool h4, h6 {
     display: inline;
 }
+#layertree h4, h6 {
+    display: inline;
+}
+
+/* 모든 테이블 공통 */
+table {
+    border: 0px solid lightgray;
+    border-spacing: 5px;
+}
+
+table td, th {
+    padding: 0.3em;
+    border: 1px dot black;
+}
+
+th {
+    background-color: #9E9E9E;
+    color: white;
+}
+tr:nth-child(even) {background-color: #f2f2f2}
