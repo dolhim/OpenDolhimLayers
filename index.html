@@ -35,27 +35,7 @@
 
     <div id="layertree" class="tools">
       <h4>레이어 설정</h4> <h6>Click a Layer name</h6>
-      <table id="layertable">
-          <tr><th>ㅁ</th><th>레이어</th><th>opacity </th></tr>
-          <tr>
-            <td><input id="visible0" class="visible" type="checkbox"/></td>
-            <td>OSM layer</td>
-            <td><input id="opacity0" type="range" min="0" max="1" step="0.1" />
-            </td>
-          </tr>
-          <tr>
-            <td><input id="visible10" class="visible" type="checkbox" /></td>
-            <td>world border layer</td>
-            <td><input id="opacity10" type="range" min="0" max="1" step="0.1" />
-            </td>
-          </tr>
-          <tr>
-            <td><input id="visible11" class="visible" type="checkbox" /></td>
-            <td>new layer</td>
-            <td><input id="opacity11" type="range" min="0" max="1" step="0.1" />
-            </td>
-          </tr>
-      </table>
+      <table id="layertable"> </table>
     </div>
 
     <!-- 하단 정보 출력-->
@@ -81,14 +61,16 @@
 
       var wmslayers = new ol.layer.Tile({
           source: new ol.source.TileWMS({
-            url: 'http://localhost:8080/geoserver/nurc/wms',
+            url: 'http://192.168.1.48:8080/geoserver/nurc/wms',
             params: {'LAYERS': 'nurc:Arc_Sample', 'TILED': true},
             serverType: 'geoserver'
-          })
+          }),
+          name: 'wms - arc sample'
         });
 
       var layers = [ osmLayer , 
           new ol.layer.Group({
+            name : 'my group',
             layers: [
               worldBorderLayer,
               wmslayers
@@ -120,14 +102,7 @@
         renderer: 'canvas'
       });
 
-      map.getLayers().forEach(function(layer, i) {
-        bindInputs(i, layer);
-        if (layer instanceof ol.layer.Group) {
-          layer.getLayers().forEach(function(sublayer, j) {
-            bindInputs(String(i) + String(j), sublayer);
-          });
-        }
-      });
+      setLayerList(map.getLayers());
 
       /* 좌표 입력 엔터 이벤트 추가 */
       $("#coordedit").keyup(function(event){
