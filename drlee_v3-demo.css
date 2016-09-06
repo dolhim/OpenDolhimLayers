@@ -1,9 +1,19 @@
 @charset "utf-8";
 
-html, body, #map {
+body {
     margin: 0;
+}
+
+html, body, #map {
     width: 100%;
     height: 100%;
+}
+
+.tools {
+    z-index: 200;
+    background-color: white;
+    padding: 0.5em 0.5em 0.5em 0.5em;
+    opacity: 0.9;
 }
 
 #pantool {
@@ -11,10 +21,6 @@ html, body, #map {
     top: 10em;
     left: 1em;
     width: 512px;
-    z-index: 200;
-    background-color: white;
-    padding: 0.5em 0.5em 0.5em 0.5em;
-    opacity: 0.8;
 }
 
 #layertree {
@@ -22,19 +28,13 @@ html, body, #map {
     bottom: 5em;
     left: 1em;
     width: 512px;
-    z-index: 200;
-    background-color: white;
-    padding: 0.5em 0.5em 0.5em 0.5em;
-    opacity: 0.8;
 }
 
-/* 레이어 표 */
-#layertree table {
-
-}
-
-#layertree li > span {
-    cursor: pointer;
+#layer {
+    position: absolute;
+    top: 15em;
+    left: 1em;
+    width: 512px;
 }
 
 #leftmenubtn {
@@ -48,17 +48,16 @@ html, body, #map {
     position: fixed;
     left: 0em;
     bottom: 0em;
-    width: 30em;
+    width: 15em;
     height: 1em;
     z-index: 199;
     background-color: white;
     opacity: 0.7;
 }
 
-#footer #coordinate {
-    position: absolute;
-    right: 1em;
-    font-size: 8pt;
+#footer #location {
+    float: right;
+    font-size: 10pt;
 }
 
 
