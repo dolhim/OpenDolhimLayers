@@ -28,44 +28,39 @@
     <div id="map" class="map"></div>
 
     <!-- 좌표 입력 후 엔터를 치면 이동 -->
-    <div id="pantool">
+    <div id="pantool" class="tools">
       <h4>이동</h4> <h6>ex) 127 37</h6> <br />
       <input type="text" id=coordedit name="posXY">
     </div>
 
-    <div id="layertree">
+    <div id="layertree" class="tools">
       <h4>레이어 설정</h4> <h6>Click a Layer name</h6>
-        <table id="layertable">
-          <tr><th>레이어명</th></tr>
+      <table id="layertable">
+          <tr><th>ㅁ</th><th>레이어</th><th>opacity </th></tr>
           <tr>
-            <td><span>OSM layer</span>
-              <fieldset id="layer0">
-                <label class="checkbox" for="visible0">
-                  <input id="visible0" class="visible" type="checkbox"/>visibility
-                </label>
-                <label>opacity</label>
-                <input class="opacity" type="range" min="0" max="1" step="0.01"/>
-              </fieldset>
+            <td><input id="visible0" class="visible" type="checkbox"/></td>
+            <td>OSM layer</td>
+            <td><input id="opacity0" type="range" min="0" max="1" step="0.1" />
             </td>
           </tr>
           <tr>
-            <td><span>Layer Group</span>
-            <fieldset id="layer1">
-              <label class="checkbox" for="visible1">
-                <input id="visible1" class="visible" type="checkbox"/>visibility
-              </label>
-              <label>opacity</label>
-              <input class="opacity" type="range" min="0" max="1" step="0.01"/>
-            </fieldset>
-            <table id="layergrouptable">
-            </table>
-          </td>
-        </table>
+            <td><input id="visible10" class="visible" type="checkbox" /></td>
+            <td>world border layer</td>
+            <td><input id="opacity10" type="range" min="0" max="1" step="0.1" />
+            </td>
+          </tr>
+          <tr>
+            <td><input id="visible11" class="visible" type="checkbox" /></td>
+            <td>new layer</td>
+            <td><input id="opacity11" type="range" min="0" max="1" step="0.1" />
+            </td>
+          </tr>
+      </table>
     </div>
 
     <!-- 하단 정보 출력-->
     <div id="footer">
-      <span id="coordinate" style="" ></span>
+        <div id="location"></div>
     </div>
 
     <script type="text/javascript">
@@ -84,17 +79,36 @@
         name: 'World borders layer'
       });
 
+      var wmslayers = new ol.layer.Tile({
+          source: new ol.source.TileWMS({
+            url: 'http://localhost:8080/geoserver/nurc/wms',
+            params: {'LAYERS': 'nurc:Arc_Sample', 'TILED': true},
+            serverType: 'geoserver'
+          })
+        });
+
       var layers = [ osmLayer , 
           new ol.layer.Group({
             layers: [
-              worldBorderLayer
+              worldBorderLayer,
+              wmslayers
             ]
           })
       ];
 
+      // 마우스 드래그
+      var mousePositionControl = new ol.control.MousePosition({
+        projection: 'EPSG:4326',
+        className: 'custom-mouse-position',
+        target: document.getElementById('location'),
+        coordinateFormat: ol.coordinate.createStringXY(5),
+        undefinedHTML: '&nbsp;'
+      });
+
       var map = new ol.Map({
         layers: layers,
         controls: ol.control.defaults().extend([
+            mousePositionControl,
             new ol.control.FullScreen()
           ]),
         target: 'map',
@@ -106,59 +120,21 @@
         renderer: 'canvas'
       });
 
-       map.on('click', function(event) {
-        var coord = event.coordinate;
-        var degrees = ol.proj.transform(coord, 'EPSG:3857', 'EPSG:4326');
-        // format a human readable version
-        var hdms = ol.coordinate.toStringHDMS(degrees);
-        var element = document.getElementById("coordinate");
-        element.innerHTML = hdms;
-      });
-
       map.getLayers().forEach(function(layer, i) {
-        if (layer instanceof ol.layer.Group)  
-          layer.getLayers().forEach((sublayer, j) => test(sublayer, j));
-      });
-
-      function test(sublayer, j) {
-        var group = document.getElementById("layergrouptable");
-        var strHTML =   
-          '<tr><td><span>' + sublayer.get('name') + '</span>'  
-          + '<fieldset id="layer0' + j + '">'  
-          + '<label class="checkbox" for="visible0' + j +'">'  
-          + '<input id="visible0' + j + '" class="visible" type="checkbox"/> visibility'
-          + '</label><label> opacity </label>'
-          + '<input class="opacity" type="range" min="0" max="1" step="0.01"/>'
-          + '</fieldset></td></tr><tr>';
-        group.innerHTML += strHTML;
-      }
-
-      map.getLayers().forEach(function(layer, i) {
-
-        bindInputs('#layer' + i, layer);
-
+        bindInputs(i, layer);
         if (layer instanceof ol.layer.Group) {
           layer.getLayers().forEach(function(sublayer, j) {
-            bindInputs('#layer0' + j, sublayer);
+            bindInputs(String(i) + String(j), sublayer);
           });
         }
       });
-
-
-      $('#layertable td > span').click(function() {
-        $(this).siblings('fieldset').toggle();
-      }).siblings('fieldset').hide();  
-
-      $('#layertree li > span').click(function() {
-        $(this).siblings('fieldset').toggle();
-      }).siblings('fieldset').hide();      
 
       /* 좌표 입력 엔터 이벤트 추가 */
       $("#coordedit").keyup(function(event){
         if(event.keyCode == 13){
           var str = $("#coordedit").val().split(" ").map(Number);
           var loc = ol.proj.transform(str, 'EPSG:4326', 'EPSG:3857');
-          doPan(loc);
+          panTo(loc);
         }
       });
 

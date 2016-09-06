@@ -1,19 +1,18 @@
   
       /* 레이어 속성 연결 */
-      function bindInputs(layerid, layer) {
-        var visibilityInput = $(layerid + ' input.visible');
+      function bindInputs(id, layer) {
+        var visibilityInput = $('#visible' + id);
         visibilityInput.on('change', function() {
           layer.setVisible(this.checked);
         });
         visibilityInput.prop('checked', layer.getVisible());
 
-        var opacityInput = $(layerid + ' input.opacity');
+        var opacityInput = $('#opacity' + id);
         opacityInput.on('input change', function() {
           layer.setOpacity(parseFloat(this.value));
         });
         opacityInput.val(String(layer.getOpacity()));
       }
-
 
       /* 사이드 내비 메뉴 열기 */
       function openNav() {
@@ -27,7 +26,7 @@
 
 
       /* 위치로 이동 */
-      function doPan(location) {
+      function panTo(location) {
         // pan from
         var pan = ol.animation.pan({
           source: map.getView().getCenter()
