@@ -34,13 +34,33 @@
     </div>
 
     <div id="layertree" class="tools">
-      <h4>레이어 설정</h4> <h6>Click a Layer name</h6>
+      <h4>레이어 설정</h4> <h6>Click a Layer name</h6> 
+      <button id="btnaddlayer" type="button">레이어 추가</button>
       <table id="layertable"> </table>
     </div>
 
     <!-- 하단 정보 출력-->
     <div id="footer">
         <div id="location"></div>
+    </div>
+
+    <!-- 레이어 추가 창 -->
+    <div id="dlgaddlayer" class="modal">
+      <div class="modal-inner">
+      <div class="modal-content">
+        <div class="control-header"> 
+          <p>레이어 추가</p>
+        </div>
+        <form id="newlayer" method="dialog">
+          <label><b>name</b></label>
+          <input type="text" placeholder="레이어명을 입력하세요." name="name" required>
+          <label><b>path</b></label>
+          <input type="text" placeholder="경로를 입력하세요." name="path" required>
+          <button id="ok" type="submit">Confirm</button>
+        </form>
+        <span class="close">x</span>
+      </div>
+      </div>
     </div>
 
     <script type="text/javascript">
@@ -113,6 +133,27 @@
         }
       });
 
+    initModal();
+
+    function initModal() {
+      var modal = document.getElementById('dlgaddlayer');
+      var btn = document.getElementById('btnaddlayer');
+      var span = document.getElementsByClassName('close')[0];
+
+      btn.onclick = function() {
+        modal.style.display = "block";
+      }
+
+      span.onclick = function() {
+        modal.style.display = "none";
+      }
+
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    }
     </script>
   </body>
 </html>
