@@ -51,13 +51,15 @@
         <div class="control-header"> 
           <p>레이어 추가</p>
         </div>
-        <form id="newlayer" method="dialog">
-          <label><b>name</b></label>
-          <input type="text" placeholder="레이어명을 입력하세요." name="name" required>
-          <label><b>path</b></label>
-          <input type="text" placeholder="경로를 입력하세요." name="path" required>
-          <button id="ok" type="submit">Confirm</button>
-        </form>
+        <div id="form-addlayer">
+          <label><b>Title</b></label>
+          <input type="text" id="addlayer-title" placeholder="제목을 입력하세요." name="name" required>
+          <label><b>URL</b></label>
+          <input type="text" id="addlayer-url" placeholder="경로를 입력하세요." name="path" required>
+          <label><b>Name</b></label>
+          <input type="text" id="addlayer-name" placeholder="WMS 레이어 이름을 입력하세요." name="path" required>
+          <button id="ok" onclick="btnaddlayer()">Confirm</button>
+        </div>
         <span class="close">x</span>
       </div>
       </div>
@@ -65,6 +67,9 @@
 
     <script type="text/javascript">
 
+    var map;
+    
+    window.onload = function() {
       var osmLayer = new ol.layer.Tile({
         source: new ol.source.OSM(),
         name: 'OSM layer'
@@ -107,7 +112,7 @@
         undefinedHTML: '&nbsp;'
       });
 
-      var map = new ol.Map({
+      map = new ol.Map({
         layers: layers,
         controls: ol.control.defaults().extend([
             mousePositionControl,
@@ -133,7 +138,8 @@
         }
       });
 
-    initModal();
+      initModal();
+    };
 
     function initModal() {
       var modal = document.getElementById('dlgaddlayer');
@@ -154,6 +160,7 @@
         }
       }
     }
+
     </script>
   </body>
 </html>

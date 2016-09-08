@@ -12,6 +12,40 @@ function setLayerList(layerlist) {
   });
 }
 
+function btnaddlayer() {
+  var title = document.getElementById('addlayer-title').value;
+  var url = document.getElementById('addlayer-url').value;
+  var wmsname = document.getElementById('addlayer-name').value;
+  var modal = document.getElementById('dlgaddlayer');
+
+  var success = addlayer(title, url, wmsname);
+
+  if (success) {
+    modal.style.display = "none";
+  }
+}
+
+function addlayer(title, url, wmsName) {
+  var ok = false;
+  var newlayer = new ol.layer.Tile({
+    source: new ol.source.TileWMS({
+      url: url,
+      params: {'LAYERS': wmsName, 'TILED': true},
+      serverType: 'geoserver'
+    }),
+    name: title
+  });
+
+  if (newlayer) {
+    map.addLayer(newlayer);
+
+    var id = map.getLayers().getLength() - 1;
+    bindInputs(id, newlayer);
+    ok = true;
+  }
+  return ok;
+}
+
 /* 레이어 속성 연결 */
 function bindInputs(id, layer) {
   addRow(id, layer);
