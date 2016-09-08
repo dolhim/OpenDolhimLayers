@@ -34,28 +34,9 @@
     </div>
 
     <div id="layertree" class="tools">
-      <h4>레이어 설정</h4> <h6>Click a Layer name</h6>
-      <table id="layertable">
-          <tr><th>ㅁ</th><th>레이어</th><th>opacity </th></tr>
-          <tr>
-            <td><input id="visible0" class="visible" type="checkbox"/></td>
-            <td>OSM layer</td>
-            <td><input id="opacity0" type="range" min="0" max="1" step="0.1" />
-            </td>
-          </tr>
-          <tr>
-            <td><input id="visible10" class="visible" type="checkbox" /></td>
-            <td>world border layer</td>
-            <td><input id="opacity10" type="range" min="0" max="1" step="0.1" />
-            </td>
-          </tr>
-          <tr>
-            <td><input id="visible11" class="visible" type="checkbox" /></td>
-            <td>new layer</td>
-            <td><input id="opacity11" type="range" min="0" max="1" step="0.1" />
-            </td>
-          </tr>
-      </table>
+      <h4>레이어 설정</h4> <h6>Click a Layer name</h6> 
+      <button id="btnaddlayer" type="button">레이어 추가</button>
+      <table id="layertable"> </table>
     </div>
 
     <!-- 하단 정보 출력-->
@@ -63,8 +44,32 @@
         <div id="location"></div>
     </div>
 
+    <!-- 레이어 추가 창 -->
+    <div id="dlgaddlayer" class="modal">
+      <div class="modal-inner">
+      <div class="modal-content">
+        <div class="control-header"> 
+          <p>레이어 추가</p>
+        </div>
+        <div id="form-addlayer">
+          <label><b>Title</b></label>
+          <input type="text" id="addlayer-title" placeholder="제목을 입력하세요." name="name" required>
+          <label><b>URL</b></label>
+          <input type="text" id="addlayer-url" placeholder="경로를 입력하세요." name="path" required>
+          <label><b>Name</b></label>
+          <input type="text" id="addlayer-name" placeholder="WMS 레이어 이름을 입력하세요." name="path" required>
+          <button id="ok" onclick="btnaddlayer()">Confirm</button>
+        </div>
+        <span class="close">x</span>
+      </div>
+      </div>
+    </div>
+
     <script type="text/javascript">
 
+    var map;
+    
+    window.onload = function() {
       var osmLayer = new ol.layer.Tile({
         source: new ol.source.OSM(),
         name: 'OSM layer'
@@ -81,14 +86,16 @@
 
       var wmslayers = new ol.layer.Tile({
           source: new ol.source.TileWMS({
-            url: 'http://localhost:8080/geoserver/nurc/wms',
+            url: 'http://192.168.1.48:8080/geoserver/nurc/wms',
             params: {'LAYERS': 'nurc:Arc_Sample', 'TILED': true},
             serverType: 'geoserver'
-          })
+          }),
+          name: 'wms - arc sample'
         });
 
       var layers = [ osmLayer , 
           new ol.layer.Group({
+            name : 'my group',
             layers: [
               worldBorderLayer,
               wmslayers
@@ -105,7 +112,7 @@
         undefinedHTML: '&nbsp;'
       });
 
-      var map = new ol.Map({
+      map = new ol.Map({
         layers: layers,
         controls: ol.control.defaults().extend([
             mousePositionControl,
@@ -120,14 +127,7 @@
         renderer: 'canvas'
       });
 
-      map.getLayers().forEach(function(layer, i) {
-        bindInputs(i, layer);
-        if (layer instanceof ol.layer.Group) {
-          layer.getLayers().forEach(function(sublayer, j) {
-            bindInputs(String(i) + String(j), sublayer);
-          });
-        }
-      });
+      setLayerList(map.getLayers());
 
       /* 좌표 입력 엔터 이벤트 추가 */
       $("#coordedit").keyup(function(event){
@@ -137,6 +137,29 @@
           panTo(loc);
         }
       });
+
+      initModal();
+    };
+
+    function initModal() {
+      var modal = document.getElementById('dlgaddlayer');
+      var btn = document.getElementById('btnaddlayer');
+      var span = document.getElementsByClassName('close')[0];
+
+      btn.onclick = function() {
+        modal.style.display = "block";
+      }
+
+      span.onclick = function() {
+        modal.style.display = "none";
+      }
+
+      window.onclick = function(event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      }
+    }
 
     </script>
   </body>
